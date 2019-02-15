@@ -1,0 +1,8 @@
+[package]
+name = "squidsay"
+version = "0.1.0"
+authors = ["Terry O'Shea <terrykoshea@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+structopt = "0.2.10"
