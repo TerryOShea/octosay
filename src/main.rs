@@ -11,7 +11,6 @@ fn main() {
 
     let mut lines = Vec::new();
 
-    // TODO: what if words > 40
     let words = args.text.split(" ");
     let mut substring = String::new();
     let mut max_line_length = 0;
@@ -19,20 +18,20 @@ fn main() {
     for (i, word) in words.enumerate() {
 
         if word.len() > 40 {
-
-            for (i, c) in word.chars().enumerate(){
-                println!("{} {}", i, c);
+            if substring.len() != 0 {
+                substring.push_str(" ");
             }
 
-
-            /* 
-                1. iterate through word by character, keeping track of the substring length so far
-                2. if we're on char 39, add a hyphen and start a new substring from the following letter
-            */
-           
-
-           
-
+            for c in word.chars() {
+                if substring.len() < 39 {
+                    substring.insert(substring.len(), c);
+                } else {
+                    substring.push_str("-");
+                    max_line_length = cmp::max(max_line_length, substring.len());
+                    lines.push(substring);
+                    substring = c.to_string();
+                }
+            }
         } else if substring.len() + word.len() > 40 {
 
             max_line_length = cmp::max(max_line_length, substring.len());
