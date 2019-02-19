@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Terry O'Shea <terrykoshea@gmail.com>", "Max Pekarsky <pekarsky.maxim@gmail.com>"]
 license = "MIT OR Apache 2.0"
 description = "A friendly octopus that says things, like its friend cowsay."
-edition = "2019"
+edition = "2018"
 repository = "https://github.com/TerryOShea/octosay"
 keywords = ["cli", "octopus", "cowsay"]
 
