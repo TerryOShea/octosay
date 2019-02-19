@@ -72,7 +72,8 @@ fn main() {
              )  ◟◞  (
             /,'))((`.\\
            (( ((  )) ))
-            `\\ `)(´ /´";
+            ))`\\ `)(´/(";
+
 
     println!(" {} ", horizontal_border);
     for line in &padded_lines {
