@@ -1,5 +1,5 @@
 [package]
-name = "squidsay"
+name = "octosay"
 version = "0.1.0"
 authors = ["Terry O'Shea <terrykoshea@gmail.com>", "Max Pekarsky <pekarsky.maxim@gmail.com>"]
 license = "MIT OR Apache-2.0"
