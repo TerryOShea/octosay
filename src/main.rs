@@ -66,13 +66,15 @@ fn main() {
     let horizontal_border = iter::repeat("-").take(max_line_length + 2).collect::<String>();
         
     let octopus = "       \\
-        \\     ,´\"\"`.
-         \\   / _  _ \\
-          \\  |(@)(@)|
+        \\       ⌢⌢
+         \\   ◜      ◝
+          \\ (        ) 
+           ◟( (@)(@) )
              )  ◟◞  (
             /,'))((`.\\
            (( ((  )) ))
-            `\\ `)(´ /´";
+           ))`\\ `)(´/((";
+
 
     println!(" {} ", horizontal_border);
     for line in &padded_lines {
