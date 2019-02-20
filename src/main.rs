@@ -1,4 +1,4 @@
-use std::{iter, cmp};
+use std::{cmp, iter};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
@@ -16,7 +16,6 @@ fn main() {
     let mut max_line_length = 0;
 
     for (i, word) in words.enumerate() {
-
         if word.len() > 40 {
             if substring.len() != 0 {
                 substring.push_str(" ");
@@ -33,20 +32,17 @@ fn main() {
                 }
             }
         } else if substring.len() + word.len() > 40 {
-
             max_line_length = cmp::max(max_line_length, substring.len());
-            
-            // starts a new line 
+
+            // starts a new line
             lines.push(substring);
             substring = String::from(word);
-
         } else {
-
             // this is triggered for the first word
-            if i != 0{
+            if i != 0 {
                 substring.push_str(" ");
             }
-            
+
             substring.push_str(word);
         }
     }
@@ -56,15 +52,21 @@ fn main() {
         lines.push(substring);
     }
 
-    let padded_lines = lines.into_iter().map(|mut line| {
-        let spaces = iter::repeat(" ").take(max_line_length - line.len()).collect::<String>();
-        line.push_str(&spaces);
-        line
-    }).collect::<Vec<_>>();
+    let padded_lines = lines
+        .into_iter()
+        .map(|mut line| {
+            let spaces = iter::repeat(" ")
+                .take(max_line_length - line.len())
+                .collect::<String>();
+            line.push_str(&spaces);
+            line
+        })
+        .collect::<Vec<_>>();
 
+    let horizontal_border = iter::repeat("-")
+        .take(max_line_length + 2)
+        .collect::<String>();
 
-    let horizontal_border = iter::repeat("-").take(max_line_length + 2).collect::<String>();
-        
     let octopus = "       \\
         \\       ⌢⌢
          \\   ◜      ◝
@@ -74,7 +76,6 @@ fn main() {
             /,'))((`.\\
            (( ((  )) ))
            ))`\\ `)(´/((";
-
 
     println!(" {} ", horizontal_border);
     for line in &padded_lines {
