@@ -53,6 +53,7 @@ name = "octosay"
 version = "0.1.0"
 dependencies = [
  "structopt 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)",
+ "unicode-width 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

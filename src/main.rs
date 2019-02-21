@@ -1,10 +1,15 @@
-use std::{cmp, iter};
+use std::iter;
 use structopt::StructOpt;
+
+use unicode_width::UnicodeWidthStr;
 
 #[derive(StructOpt)]
 struct Cli {
     text: String,
 }
+
+// TODO: exclamation marks do not work
+// TODO: emoji/>1 byte unicode characters do not work
 
 fn main() {
     let args = Cli::from_args();
@@ -13,7 +18,6 @@ fn main() {
 
     let words = args.text.split(" ");
     let mut substring = String::new();
-    let mut max_line_length = 0;
 
     for (i, word) in words.enumerate() {
         if word.len() > 40 {
@@ -26,14 +30,11 @@ fn main() {
                     substring.insert(substring.len(), c);
                 } else {
                     substring.push_str("-");
-                    max_line_length = cmp::max(max_line_length, substring.len());
                     lines.push(substring);
                     substring = c.to_string();
                 }
             }
         } else if substring.len() + word.len() > 40 {
-            max_line_length = cmp::max(max_line_length, substring.len());
-
             // starts a new line
             lines.push(substring);
             substring = String::from(word);
@@ -48,15 +49,20 @@ fn main() {
     }
 
     if substring.len() > 0 {
-        max_line_length = cmp::max(max_line_length, substring.len());
         lines.push(substring);
     }
+
+    let max_line_length = lines
+        .iter()
+        .map(|line| line.as_str().width())
+        .max()
+        .unwrap_or(0);
 
     let padded_lines = lines
         .into_iter()
         .map(|mut line| {
             let spaces = iter::repeat(" ")
-                .take(max_line_length - line.len())
+                .take(max_line_length - line.as_str().width())
                 .collect::<String>();
             line.push_str(&spaces);
             line

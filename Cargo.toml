@@ -10,3 +10,4 @@ keywords = ["cli", "octopus", "cowsay"]
 
 [dependencies]
 structopt = "0.2.10"
+unicode-width = "*"
