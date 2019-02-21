@@ -8,33 +8,36 @@ struct Cli {
     text: String,
 }
 
-// TODO: exclamation marks do not work
-// TODO: emoji/>1 byte unicode characters do not work
+const MAX_LINE_WIDTH: usize = 40;
+
+// TODO: write tests
+// TODO: break into separate functions, e.g. `format_string`
+// TODO: .width() calculation is non-trivial--
+//
 
 fn main() {
     let args = Cli::from_args();
 
     let mut lines = Vec::new();
-
     let words = args.text.split(" ");
     let mut substring = String::new();
 
     for (i, word) in words.enumerate() {
-        if word.len() > 40 {
-            if substring.len() != 0 {
+        if word.width() > MAX_LINE_WIDTH {
+            if !substring.is_empty() {
                 substring.push_str(" ");
             }
 
             for c in word.chars() {
-                if substring.len() < 39 {
-                    substring.insert(substring.len(), c);
+                if substring.width() < MAX_LINE_WIDTH - 1 {
+                    substring.insert(substring.width(), c);
                 } else {
                     substring.push_str("-");
                     lines.push(substring);
                     substring = c.to_string();
                 }
             }
-        } else if substring.len() + word.len() > 40 {
+        } else if substring.width() + word.width() > MAX_LINE_WIDTH {
             // starts a new line
             lines.push(substring);
             substring = String::from(word);
@@ -48,7 +51,7 @@ fn main() {
         }
     }
 
-    if substring.len() > 0 {
+    if substring.width() > 0 {
         lines.push(substring);
     }
 
