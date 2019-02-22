@@ -5,14 +5,14 @@ use unicode_width::UnicodeWidthStr;
 
 const MAX_LINE_WIDTH: usize = 40;
 const OCTOPUS: &str = "       \\
-    \\       ⌢⌢
-     \\   ◜      ◝
-      \\ (        ) 
-       ◟( (@)(@) )
-         )  ◟◞  (
-        /,'))((`.\\
-       (( ((  )) ))
-       ))`\\ `)(´/((";
+        \\       ⌢⌢
+         \\   ◜      ◝
+          \\ (        ) 
+           ◟( (@)(@) )
+             )  ◟◞  (
+            /,'))((`.\\
+           (( ((  )) ))
+           ))`\\ `)(´/((";
 
 #[derive(StructOpt)]
 struct Cli {
