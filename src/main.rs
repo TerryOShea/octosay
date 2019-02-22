@@ -9,50 +9,56 @@ struct Cli {
 }
 
 const MAX_LINE_WIDTH: usize = 40;
+const OCTOPUS: &str = "       \\
+    \\       ⌢⌢
+     \\   ◜      ◝
+      \\ (        ) 
+       ◟( (@)(@) )
+         )  ◟◞  (
+        /,'))((`.\\
+       (( ((  )) ))
+       ))`\\ `)(´/((";
 
 // TODO: write tests
-// TODO: break into separate functions, e.g. `format_string`
-// TODO: .width() calculation is non-trivial--
-//
+// TODO: break into separate (testable) functions, e.g. `format_string`
+// TODO: .width() entails non-trivial computation--don't use so willy-nillily
 
 fn main() {
     let args = Cli::from_args();
-
     let mut lines = Vec::new();
     let words = args.text.split(" ");
-    let mut substring = String::new();
+    let mut current_line = String::new();
 
     for (i, word) in words.enumerate() {
         if word.width() > MAX_LINE_WIDTH {
-            if !substring.is_empty() {
-                substring.push_str(" ");
+            // special case: if one word is >40 chars, break it up with hyphens
+            if !current_line.is_empty() {
+                current_line.push_str(" ");
             }
 
             for c in word.chars() {
-                if substring.width() < MAX_LINE_WIDTH - 1 {
-                    substring.insert(substring.width(), c);
+                if current_line.width() < MAX_LINE_WIDTH - 1 {
+                    current_line.insert(current_line.width(), c);
                 } else {
-                    substring.push_str("-");
-                    lines.push(substring);
-                    substring = c.to_string();
+                    current_line.push_str("-");
+                    lines.push(current_line);
+                    current_line = c.to_string();
                 }
             }
-        } else if substring.width() + word.width() > MAX_LINE_WIDTH {
+        } else if current_line.width() + word.width() > MAX_LINE_WIDTH {
             // starts a new line
-            lines.push(substring);
-            substring = String::from(word);
+            lines.push(current_line);
+            current_line = String::from(word);
         } else {
-            // this is triggered for the first word
             if i != 0 {
-                substring.push_str(" ");
+                current_line.push_str(" ");
             }
-
-            substring.push_str(word);
+            current_line.push_str(word);
         }
     }
 
-    if substring.width() > 0 {
-        lines.push(substring);
+    if current_line.width() > 0 {
+        lines.push(current_line);
     }
 
     let max_line_length = lines
@@ -76,20 +82,10 @@ fn main() {
         .take(max_line_length + 2)
         .collect::<String>();
 
-    let octopus = "       \\
-        \\       ⌢⌢
-         \\   ◜      ◝
-          \\ (        ) 
-           ◟( (@)(@) )
-             )  ◟◞  (
-            /,'))((`.\\
-           (( ((  )) ))
-           ))`\\ `)(´/((";
-
     println!(" {} ", horizontal_border);
     for line in &padded_lines {
         println!("< {} >", line);
     }
     println!(" {} ", horizontal_border);
-    println!("{}", octopus);
+    println!("{}", OCTOPUS);
 }
