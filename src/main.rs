@@ -3,11 +3,6 @@ use structopt::StructOpt;
 
 use unicode_width::UnicodeWidthStr;
 
-#[derive(StructOpt)]
-struct Cli {
-    text: String,
-}
-
 const MAX_LINE_WIDTH: usize = 40;
 const OCTOPUS: &str = "       \\
     \\       ⌢⌢
@@ -19,9 +14,13 @@ const OCTOPUS: &str = "       \\
        (( ((  )) ))
        ))`\\ `)(´/((";
 
+#[derive(StructOpt)]
+struct Cli {
+    text: String,
+}
+
 // TODO: write tests
 // TODO: break into separate (testable) functions, e.g. `format_string`
-// TODO: .width() entails non-trivial computation--don't use so willy-nillily
 
 fn main() {
     let args = Cli::from_args();
@@ -30,28 +29,30 @@ fn main() {
     let mut current_line = String::new();
 
     for (i, word) in words.enumerate() {
-        if word.width() > MAX_LINE_WIDTH {
+        let word_width = word.width();
+
+        if word_width > MAX_LINE_WIDTH {
             // special case: if one word is >40 chars, break it up with hyphens
             if !current_line.is_empty() {
-                current_line.push_str(" ");
+                current_line.push(' ');
             }
 
             for c in word.chars() {
                 if current_line.width() < MAX_LINE_WIDTH - 1 {
-                    current_line.insert(current_line.width(), c);
+                    current_line.push(c);
                 } else {
-                    current_line.push_str("-");
+                    current_line.push('-');
                     lines.push(current_line);
                     current_line = c.to_string();
                 }
             }
-        } else if current_line.width() + word.width() > MAX_LINE_WIDTH {
+        } else if current_line.width() + word_width > MAX_LINE_WIDTH {
             // starts a new line
             lines.push(current_line);
             current_line = String::from(word);
         } else {
             if i != 0 {
-                current_line.push_str(" ");
+                current_line.push(' ');
             }
             current_line.push_str(word);
         }
